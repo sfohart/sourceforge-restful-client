@@ -1,19 +1,25 @@
 package br.ufba.dcc.mestrado.computacao.sourceforge.restful.responses;
 
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeProjectResult;
+import java.util.List;
 
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeProject;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+@XStreamAlias("Project")
 public class SourceforgeProjectResponse {
 
-	private SourceforgeProjectResult result;
+	@XStreamImplicit(itemFieldName = "Project")
+	private List<SourceforgeProject> sourceforgeProjects;
 
-	public SourceforgeProjectResult getResult() {
-		return result;
+	public List<SourceforgeProject> getSourceforgeProjects() {
+		return sourceforgeProjects;
 	}
 
-	public void setResult(SourceforgeProjectResult result) {
-		this.result = result;
+	public void setSourceforgeProjects(
+			List<SourceforgeProject> sourceforgeProjects) {
+		this.sourceforgeProjects = sourceforgeProjects;
 	}
-	
-	
-	
+
 }
