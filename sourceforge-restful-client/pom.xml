@@ -37,6 +37,22 @@
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 		</dependency>
+
+		<!-- Leitor de RSS -->
+		<dependency>
+			<groupId>rome</groupId>
+			<artifactId>rome</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<!-- Jena -->
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>apache-jena-libs</artifactId>
+			<type>pom</type>
+			<version>2.10.1</version>
+		</dependency>
+
 	</dependencies>
 
 </project>
