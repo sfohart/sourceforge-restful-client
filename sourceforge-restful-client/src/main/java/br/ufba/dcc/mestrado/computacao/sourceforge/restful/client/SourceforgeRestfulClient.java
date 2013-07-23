@@ -23,6 +23,8 @@ import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeLicen
 import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeProject;
 import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeSVNRepository;
 import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeTracker;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.user.SourceforgeUser;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.user.SourceforgeUserProject;
 
 public class SourceforgeRestfulClient {
 
@@ -59,38 +61,7 @@ public class SourceforgeRestfulClient {
 			
 			logger.info(uri);
 			
-			RestClient restClient = Restfulie.custom();
-			restClient.getMediaTypes().register(new JsonMediaType() {
-
-				@Override
-				protected List<Class> getTypesToEnhance() {					
-					return Arrays.<Class>asList(
-							SourceforgeCharity.class,
-							SourceforgeDeveloper.class,
-							SourceforgeDonation.class,
-							SourceforgeLicense.class,
-							SourceforgeProject.class,
-							SourceforgeSVNRepository.class,
-							SourceforgeTracker.class
-						);
-				}
-				
-				@Override
-				protected List<String> getCollectionNames() {
-					return Arrays.asList(
-							"licenses", 
-							"maintainers", 
-							"programming-languages", 
-							"developers",
-							"categories",
-							"databases",
-							"environments",
-							"audiences",
-							"topics",
-							"os");
-				}
-				
-			});
+			RestClient restClient = configureProjectMediaTypes();
 			
 			Response response = restClient.at(uri).accept("application/json").get();
 			sourceforgeProject = response.getResource();
@@ -100,6 +71,141 @@ public class SourceforgeRestfulClient {
 		}
 		
 		return sourceforgeProject;
+	}
+	
+	public SourceforgeProject getProjectByName(String projectName) {
+		SourceforgeProject resource = null;
+		
+		try {
+			String url = getProperties().getProperty("sourceforge.api.project.name");			
+			String uri = MessageFormat.format(url, projectName);
+			
+			logger.info(uri);
+			
+			RestClient restClient = configureProjectMediaTypes();
+			
+			Response response = restClient.at(uri).accept("application/json").get();
+			if (response.getCode() == 200) {
+				resource = response.getResource();
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return resource;
+	}
+	
+	public SourceforgeUser getUserByName(String username) {
+		SourceforgeUser resource = null;
+		
+		try {
+			String url = getProperties().getProperty("sourceforge.api.user.username");			
+			String uri = MessageFormat.format(url, username);
+			
+			logger.info(uri);
+			
+			RestClient restClient = configureUserMediaTypes();
+			
+			Response response = restClient.at(uri).accept("application/json").get();
+			if (response.getCode() == 200) {
+				resource = response.getResource();
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return resource;
+	}
+	
+	public SourceforgeUser getUserById(String userId) {
+		SourceforgeUser resource = null;
+		
+		try {
+			String url = getProperties().getProperty("sourceforge.api.user.id");			
+			String uri = MessageFormat.format(url, userId);
+			
+			logger.info(uri);
+			
+			RestClient restClient = configureUserMediaTypes();
+			
+			Response response = restClient.at(uri).accept("application/json").get();
+			if (response.getCode() == 200) {
+				resource = response.getResource();
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return resource;
+	}
+	
+	/**
+	 * @return
+	 */
+	private RestClient configureUserMediaTypes() {
+		RestClient restClient = Restfulie.custom();
+		restClient.getMediaTypes().register(new JsonMediaType() {
+
+			@Override
+			protected List<Class> getTypesToEnhance() {					
+				return Arrays.<Class>asList(
+						SourceforgeUser.class,
+						SourceforgeUserProject.class
+					);
+			}
+			
+			@Override
+			protected List<String> getCollectionNames() {
+				return Arrays.asList(
+						"projects"
+					);
+			}
+			
+		});
+		return restClient;
+	}
+	
+
+	/**
+	 * @return
+	 */
+	private RestClient configureProjectMediaTypes() {
+		RestClient restClient = Restfulie.custom();
+		restClient.getMediaTypes().register(new JsonMediaType() {
+
+			@Override
+			protected List<Class> getTypesToEnhance() {					
+				return Arrays.<Class>asList(
+						SourceforgeCharity.class,
+						SourceforgeDeveloper.class,
+						SourceforgeDonation.class,
+						SourceforgeLicense.class,
+						SourceforgeProject.class,
+						SourceforgeSVNRepository.class,
+						SourceforgeTracker.class
+					);
+			}
+			
+			@Override
+			protected List<String> getCollectionNames() {
+				return Arrays.asList(
+						"licenses", 
+						"maintainers", 
+						"programming-languages", 
+						"developers",
+						"categories",
+						"databases",
+						"environments",
+						"audiences",
+						"topics",
+						"os");
+			}
+			
+		});
+		return restClient;
 	}
 	
 }
