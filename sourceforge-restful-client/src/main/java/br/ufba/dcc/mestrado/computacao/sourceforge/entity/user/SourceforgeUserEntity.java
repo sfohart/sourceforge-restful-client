@@ -1,62 +1,63 @@
-package br.ufba.dcc.mestrado.computacao.sourceforge.data.user;
+package br.ufba.dcc.mestrado.computacao.sourceforge.entity.user;
 
 import java.util.List;
 
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.SourceforgeDTO;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import br.ufba.dcc.mestrado.computacao.sourceforge.entity.SourceforgeBaseEntity;
+
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-@XStreamAlias(SourceforgeUser.NODE_NAME)
-public class SourceforgeUser implements SourceforgeDTO {
+@Entity
+@Table(name = SourceforgeUserEntity.NODE_NAME)
+public class SourceforgeUserEntity extends SourceforgeBaseEntity {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1163939909479145977L;
+	private static final long serialVersionUID = 7352870885203552547L;
 
-	public final static String NODE_NAME = "User";
+	public final static String NODE_NAME = "user";
 
-	@XStreamAlias("disable_ads")
+	@Column(name = "disable_ads")
 	private String disableAds;
 
-	@XStreamAlias("id")
-	private Number id;
-
-	@XStreamAlias("language")
+	@Column(name = "language")
 	private String language;
 
-	@XStreamAlias("last_login")
+	@Column(name = "last_login")
 	private Long lastLogin;
 
-	@XStreamAlias("name")
+	@Column(name = "name")
 	private String name;
 
-	@XStreamAlias("page_entries")
+	@Column(name = "page_entries")
 	private Long pageEntries;
 
 	@XStreamImplicit(itemFieldName = "projects")
-	private List<SourceforgeUserProject> projects;
+	private List<SourceforgeUserProjectEntity> projects;
 
-	@XStreamAlias("query_logger")
+	@Column(name = "query_logger")
 	private String queryLogger;
 
-	@XStreamAlias("registered")
+	@Column(name = "registered")
 	private Long registered;
 
-	@XStreamAlias("sf_email")
+	@Column(name = "sf_email")
 	private String sourceforgeEmail;
 
-	@XStreamAlias("status")
+	@Column(name = "status")
 	private String status;
 
-	@XStreamAlias("timezone")
+	@Column(name = "timezone")
 	private String timezone;
 
-	@XStreamAlias("username")
+	@Column(name = "username")
 	private String username;
-	
-	@XStreamAlias("preferred_mirror")
+
+	@Column(name = "preferred_mirror")
 	private String preferredMirror;
 
 	public String getDisableAds() {
@@ -65,14 +66,6 @@ public class SourceforgeUser implements SourceforgeDTO {
 
 	public void setDisableAds(String disableAds) {
 		this.disableAds = disableAds;
-	}
-
-	public Number getId() {
-		return id;
-	}
-
-	public void setId(Number id) {
-		this.id = id;
 	}
 
 	public String getLanguage() {
@@ -107,11 +100,11 @@ public class SourceforgeUser implements SourceforgeDTO {
 		this.pageEntries = pageEntries;
 	}
 
-	public List<SourceforgeUserProject> getProjects() {
+	public List<SourceforgeUserProjectEntity> getProjects() {
 		return projects;
 	}
 
-	public void setProjects(List<SourceforgeUserProject> projects) {
+	public void setProjects(List<SourceforgeUserProjectEntity> projects) {
 		this.projects = projects;
 	}
 

@@ -1,26 +1,29 @@
-package br.ufba.dcc.mestrado.computacao.sourceforge.data.project;
+package br.ufba.dcc.mestrado.computacao.sourceforge.entity.project;
 
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.SourceforgeDTO;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import br.ufba.dcc.mestrado.computacao.sourceforge.entity.SourceforgeBaseEntity;
 
-@XStreamAlias(SourceforgeDeveloper.NODE_NAME)
-public class SourceforgeDeveloper implements SourceforgeDTO {
+@Entity
+@Table(name = SourceforgeDeveloperEntity.NODE_NAME)
+public class SourceforgeDeveloperEntity extends SourceforgeBaseEntity {
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6694822164072948942L;
+	private static final long serialVersionUID = -4127846405643985149L;
 
 	public final static String NODE_NAME = "developer";
 	
-	@XStreamAlias("homepage")
+	@Column(name = "homepage")
 	private String homepage;
 	
-	@XStreamAlias("mbox_sha1sum")
+	@Column(name = "mbox_sha1sum")
 	private String mboxSHA1Sum;
 	
-	@XStreamAlias("name")
+	@Column(name = "name")
 	private String name;
 
 	public String getHomepage() {

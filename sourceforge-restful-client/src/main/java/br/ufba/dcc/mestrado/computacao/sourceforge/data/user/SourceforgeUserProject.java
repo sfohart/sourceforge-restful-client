@@ -1,9 +1,16 @@
 package br.ufba.dcc.mestrado.computacao.sourceforge.data.user;
 
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.SourceforgeDTO;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias(SourceforgeUserProject.NODE_NAME)
-public class SourceforgeUserProject {
+public class SourceforgeUserProject implements SourceforgeDTO {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4387409623227422052L;
 
 	public final static String NODE_NAME = "project";
 

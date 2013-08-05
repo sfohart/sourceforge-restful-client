@@ -3,7 +3,6 @@ package br.ufba.dcc.mestrado.computacao.sourceforge.restful.client;
 import org.junit.Test;
 
 import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeProject;
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.user.SourceforgeUser;
 
 public class SourceforgeApiProjectTest extends AbstractSourceforgeApiTest {
 

@@ -3,12 +3,19 @@ package br.ufba.dcc.mestrado.computacao.sourceforge.data.project;
 
 import java.util.List;
 
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.SourceforgeDTO;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 @XStreamAlias(SourceforgeProject.NODE_NAME)
-public class SourceforgeProject{
+public class SourceforgeProject implements SourceforgeDTO {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6400624151546879027L;
+
 	public final static String NODE_NAME = "Project";
 	
 	@XStreamAlias("SVNRepository")

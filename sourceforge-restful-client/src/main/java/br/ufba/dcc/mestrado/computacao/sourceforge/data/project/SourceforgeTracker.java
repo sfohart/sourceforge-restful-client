@@ -1,9 +1,16 @@
 package br.ufba.dcc.mestrado.computacao.sourceforge.data.project;
 
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.SourceforgeDTO;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias(SourceforgeTracker.NODE_NAME)
-public class SourceforgeTracker {
+public class SourceforgeTracker implements SourceforgeDTO {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3671526502459491024L;
 
 	public final static String NODE_NAME = "tracker";
 
