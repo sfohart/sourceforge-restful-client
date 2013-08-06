@@ -55,7 +55,8 @@ public class SourceforgeProjectEntity extends SourceforgeBaseEntity {
    	@JoinTable(name="project_developers")
    	private List<SourceforgeDeveloperEntity> developers;
    	
-   	@Column(name = "donation")
+   	@ManyToOne(cascade=CascadeType.ALL)
+   	@JoinColumn(name="donation_id", referencedColumnName="id")
    	private SourceforgeDonationEntity donation;
    	
    	@Column(name = "download_page")
@@ -88,7 +89,7 @@ public class SourceforgeProjectEntity extends SourceforgeBaseEntity {
    	private Double percentile;
    	
    	@Column(name = "private")
-   	private Number privateNumber;
+   	private Long privateNumber;
    	
    	@ManyToMany(cascade=CascadeType.ALL)   	
    	private List<SourceforgeProgrammingLanguageEntity> programmingLanguages;
@@ -115,7 +116,7 @@ public class SourceforgeProjectEntity extends SourceforgeBaseEntity {
    	private List<SourceforgeTrackerEntity> trackers;
    	
    	@Column(name = "type")
-   	private Number typeNumber;
+   	private Long typeNumber;
 
 	public SourceforgeSVNRepositoryEntity getSvnRepository() {
 		return svnRepository;
@@ -269,11 +270,11 @@ public class SourceforgeProjectEntity extends SourceforgeBaseEntity {
 		this.percentile = percentile;
 	}
 
-	public Number getPrivateNumber() {
+	public Long getPrivateNumber() {
 		return privateNumber;
 	}
 
-	public void setPrivateNumber(Number privateNumber) {
+	public void setPrivateNumber(Long privateNumber) {
 		this.privateNumber = privateNumber;
 	}
 
@@ -341,11 +342,11 @@ public class SourceforgeProjectEntity extends SourceforgeBaseEntity {
 		this.trackers = trackers;
 	}
 
-	public Number getTypeNumber() {
+	public Long getTypeNumber() {
 		return typeNumber;
 	}
 
-	public void setTypeNumber(Number typeNumber) {
+	public void setTypeNumber(Long typeNumber) {
 		this.typeNumber = typeNumber;
 	}
    	

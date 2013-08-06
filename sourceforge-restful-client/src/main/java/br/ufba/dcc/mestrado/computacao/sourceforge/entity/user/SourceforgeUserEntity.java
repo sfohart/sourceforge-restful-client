@@ -10,8 +10,6 @@ import javax.persistence.Table;
 
 import br.ufba.dcc.mestrado.computacao.sourceforge.entity.SourceforgeBaseEntity;
 
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
-
 @Entity
 @Table(name = SourceforgeUserEntity.NODE_NAME)
 public class SourceforgeUserEntity extends SourceforgeBaseEntity {
