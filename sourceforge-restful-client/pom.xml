@@ -59,10 +59,30 @@
 			<type>pom</type>
 			<version>${apache-jena-libs.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${beanutils-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils-bean-collections</artifactId>
+			<version>${beanutils-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>${commons-collections.version}</version>
+		</dependency>
 
 	</dependencies>
 	
 	<properties>
+	    <commons-collections.version>3.2.1</commons-collections.version>
+		<beanutils-version>1.8.3</beanutils-version>
 	    <rome.version>1.0</rome.version>
 	    <apache-jena-libs.version>2.10.1</apache-jena-libs.version>
 		<beanutils-version>1.8.3</beanutils-version>
