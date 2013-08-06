@@ -6,8 +6,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -24,7 +26,8 @@ public class SourceforgeProjectEntity extends SourceforgeBaseEntity {
 
 	public final static String NODE_NAME = "project";
 	
-	@Column(name = "SVNRepository")
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="svn_repository_id", referencedColumnName="id")
    	private SourceforgeSVNRepositoryEntity svnRepository;
    	
 	@ManyToMany(cascade=CascadeType.ALL)	
@@ -55,7 +58,7 @@ public class SourceforgeProjectEntity extends SourceforgeBaseEntity {
    	@Column(name = "donation")
    	private SourceforgeDonationEntity donation;
    	
-   	@Column(name = "download-page")
+   	@Column(name = "download_page")
    	private String downloaPage;
    	
    	@ManyToMany(cascade=CascadeType.ALL)   	
@@ -68,7 +71,7 @@ public class SourceforgeProjectEntity extends SourceforgeBaseEntity {
    	@ManyToMany(cascade=CascadeType.ALL)
    	private List<SourceforgeLicenseEntity> licenses;
    	
-   	@Column(name = "mailing-list")
+   	@Column(name = "mailing_list")
    	private String mailingList;
    	
    	@ManyToMany(cascade=CascadeType.ALL)

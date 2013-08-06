@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import br.ufba.dcc.mestrado.computacao.sourceforge.entity.SourceforgeBaseEntity;
@@ -19,24 +21,25 @@ public class SourceforgeUserEntity extends SourceforgeBaseEntity {
 	 */
 	private static final long serialVersionUID = 7352870885203552547L;
 
-	public final static String NODE_NAME = "user";
+	public final static String NODE_NAME = "sourceforge_user";
 
 	@Column(name = "disable_ads")
 	private String disableAds;
 
-	@Column(name = "language")
+	@Column(name = "user_language")
 	private String language;
 
 	@Column(name = "last_login")
 	private Long lastLogin;
 
-	@Column(name = "name")
+	@Column(name = "fullname")
 	private String name;
 
 	@Column(name = "page_entries")
 	private Long pageEntries;
 
-	@XStreamImplicit(itemFieldName = "projects")
+	@ManyToMany
+	@JoinTable(name = "sourceforge_user_project_info")
 	private List<SourceforgeUserProjectEntity> projects;
 
 	@Column(name = "query_logger")

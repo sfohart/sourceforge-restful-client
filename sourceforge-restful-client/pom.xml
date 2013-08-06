@@ -7,7 +7,65 @@
 	<name>Sourceforge RESTful Client</name>
 	<description>Sourceforge RESTful Client</description>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<executions>
+					<execution>
+						<id>run</id>
+						<phase>package</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>org.jboss.weld.environment.se.StartMain</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>org.jboss.weld.environment.se.StartMain</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
 	<dependencies>
+		
+		<!-- Leitor de RSS -->
+		<dependency>
+			<groupId>rome</groupId>
+			<artifactId>rome</artifactId>
+			<version>${rome.version}</version>
+		</dependency>
+
+		<!-- Jena -->
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>apache-jena-libs</artifactId>
+			<type>pom</type>
+			<version>${apache-jena-libs.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>br.com.caelum</groupId>
 			<artifactId>restfulie</artifactId>
@@ -37,7 +95,14 @@
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 		</dependency>
-		
+
+		<!-- Banco de dados -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
+		</dependency>
+
 		<!-- JAVA EE -->
 		<dependency>
 			<groupId>org.glassfish.main.extras</groupId>
@@ -45,21 +110,30 @@
 			<version>${glassfish-embedded-all.version}</version>
 		</dependency>
 
-		<!-- Leitor de RSS -->
+		<!-- Hibernate -->
 		<dependency>
-			<groupId>rome</groupId>
-			<artifactId>rome</artifactId>
-			<version>${rome.version}</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<version>${hibernate-jpa-2.0-api.version}</version>
 		</dependency>
 
-		<!-- Jena -->
+		<!-- Weld -->
 		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>apache-jena-libs</artifactId>
-			<type>pom</type>
-			<version>${apache-jena-libs.version}</version>
+			<groupId>org.jboss.weld.se</groupId>
+			<artifactId>weld-se</artifactId>
+			<version>${weld.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -79,12 +153,12 @@
 		</dependency>
 
 	</dependencies>
-	
+
 	<properties>
-	    <commons-collections.version>3.2.1</commons-collections.version>
+		<commons-collections.version>3.2.1</commons-collections.version>
 		<beanutils-version>1.8.3</beanutils-version>
-	    <rome.version>1.0</rome.version>
-	    <apache-jena-libs.version>2.10.1</apache-jena-libs.version>
+		<rome.version>1.0</rome.version>
+		<apache-jena-libs.version>2.10.1</apache-jena-libs.version>
 		<beanutils-version>1.8.3</beanutils-version>
 		<hibernate.version>4.2.3.Final</hibernate.version>
 		<hibernate-jpa-2.0-api.version>1.0.1.Final</hibernate-jpa-2.0-api.version>

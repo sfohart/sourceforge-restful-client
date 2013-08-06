@@ -1,16 +1,26 @@
 package br.ufba.dcc.mestrado.computacao.sourceforge.entity.project;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@XStreamAlias(SourceforgeSVNRepositoryEntity.NODE_NAME)
-public class SourceforgeSVNRepositoryEntity {
+import br.ufba.dcc.mestrado.computacao.sourceforge.entity.SourceforgeBaseEntity;
 
-	public final static String NODE_NAME = "SVNRepository";
+@Entity
+@Table(name = SourceforgeSVNRepositoryEntity.NODE_NAME)
+public class SourceforgeSVNRepositoryEntity extends SourceforgeBaseEntity {
 
-	@XStreamAlias("browse")
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7420423764349013049L;
+
+	public final static String NODE_NAME = "svn_repository";
+
+	@Column(name = "browse")
 	private String browse;
 
-	@XStreamAlias("location")
+	@Column(name = "location")
 	private String location;
 
 	public String getBrowse() {

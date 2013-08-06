@@ -18,7 +18,7 @@ import javax.persistence.Persistence;
  */
 public class EntityManagerFactoryProducer {
 	
-	private static final String PERSISTENCE_UNIT = "ohloh";
+	private static final String PERSISTENCE_UNIT = "sourceforge";
 	
 	@Produces
 	@ApplicationScoped
