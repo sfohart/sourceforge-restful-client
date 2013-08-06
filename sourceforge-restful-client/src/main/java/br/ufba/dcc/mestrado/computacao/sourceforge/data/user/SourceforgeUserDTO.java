@@ -7,8 +7,8 @@ import br.ufba.dcc.mestrado.computacao.sourceforge.data.SourceforgeDTO;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-@XStreamAlias(SourceforgeUser.NODE_NAME)
-public class SourceforgeUser implements SourceforgeDTO {
+@XStreamAlias(SourceforgeUserDTO.NODE_NAME)
+public class SourceforgeUserDTO implements SourceforgeDTO {
 
 	/**
 	 * 
@@ -36,7 +36,7 @@ public class SourceforgeUser implements SourceforgeDTO {
 	private Long pageEntries;
 
 	@XStreamImplicit(itemFieldName = "projects")
-	private List<SourceforgeUserProject> projects;
+	private List<SourceforgeUserProjectDTO> projects;
 
 	@XStreamAlias("query_logger")
 	private String queryLogger;
@@ -107,11 +107,11 @@ public class SourceforgeUser implements SourceforgeDTO {
 		this.pageEntries = pageEntries;
 	}
 
-	public List<SourceforgeUserProject> getProjects() {
+	public List<SourceforgeUserProjectDTO> getProjects() {
 		return projects;
 	}
 
-	public void setProjects(List<SourceforgeUserProject> projects) {
+	public void setProjects(List<SourceforgeUserProjectDTO> projects) {
 		this.projects = projects;
 	}
 

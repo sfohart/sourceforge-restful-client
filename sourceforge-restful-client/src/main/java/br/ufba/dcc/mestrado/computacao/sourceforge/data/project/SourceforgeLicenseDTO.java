@@ -4,8 +4,8 @@ import br.ufba.dcc.mestrado.computacao.sourceforge.data.SourceforgeDTO;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-@XStreamAlias(SourceforgeLicense.NODE_NAME)
-public class SourceforgeLicense implements SourceforgeDTO {
+@XStreamAlias(SourceforgeLicenseDTO.NODE_NAME)
+public class SourceforgeLicenseDTO implements SourceforgeDTO {
 
 	/**
 	 * 

@@ -8,8 +8,8 @@ import br.ufba.dcc.mestrado.computacao.sourceforge.data.SourceforgeDTO;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-@XStreamAlias(SourceforgeDonation.NODE_NAME)
-public class SourceforgeDonation implements SourceforgeDTO {
+@XStreamAlias(SourceforgeDonationDTO.NODE_NAME)
+public class SourceforgeDonationDTO implements SourceforgeDTO {
 	
 	/**
 	 * 
@@ -19,7 +19,7 @@ public class SourceforgeDonation implements SourceforgeDTO {
 	public final static String NODE_NAME = "donation";
 	
 	@XStreamImplicit(itemFieldName = "charities")
-   	private List<SourceforgeCharity> charities;
+   	private List<SourceforgeCharityDTO> charities;
    	
    	@XStreamAlias("comment")
    	private String comment;
@@ -30,11 +30,11 @@ public class SourceforgeDonation implements SourceforgeDTO {
    	@XStreamAlias("status")
    	private String status;
 
-	public List<SourceforgeCharity> getCharities() {
+	public List<SourceforgeCharityDTO> getCharities() {
 		return charities;
 	}
 
-	public void setCharities(List<SourceforgeCharity> charities) {
+	public void setCharities(List<SourceforgeCharityDTO> charities) {
 		this.charities = charities;
 	}
 

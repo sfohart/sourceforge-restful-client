@@ -16,15 +16,15 @@ import br.com.caelum.restfulie.Response;
 import br.com.caelum.restfulie.RestClient;
 import br.com.caelum.restfulie.Restfulie;
 import br.com.caelum.restfulie.mediatype.JsonMediaType;
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeCharity;
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeDeveloper;
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeDonation;
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeLicense;
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeProject;
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeSVNRepository;
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeTracker;
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.user.SourceforgeUser;
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.user.SourceforgeUserProject;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeCharityDTO;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeDeveloperDTO;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeDonationDTO;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeLicenseDTO;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeProjectDTO;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeSVNRepositoryDTO;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeTrackerDTO;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.user.SourceforgeUserDTO;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.user.SourceforgeUserProjectDTO;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -62,8 +62,8 @@ public class SourceforgeRestfulClient {
 		return properties;
 	}
 	
-	public SourceforgeProject getProjectById(String projectId) {
-		SourceforgeProject sourceforgeProject = null;
+	public SourceforgeProjectDTO getProjectById(String projectId) {
+		SourceforgeProjectDTO sourceforgeProject = null;
 		
 		try {
 			String url = getProperties().getProperty("sourceforge.api.project.id");			
@@ -83,8 +83,8 @@ public class SourceforgeRestfulClient {
 		return sourceforgeProject;
 	}
 	
-	public SourceforgeProject getProjectByName(String projectName) {
-		SourceforgeProject resource = null;
+	public SourceforgeProjectDTO getProjectByName(String projectName) {
+		SourceforgeProjectDTO resource = null;
 		
 		try {
 			String url = getProperties().getProperty("sourceforge.api.project.name");			
@@ -106,8 +106,8 @@ public class SourceforgeRestfulClient {
 		return resource;
 	}
 	
-	public SourceforgeUser getUserByName(String username) {
-		SourceforgeUser resource = null;
+	public SourceforgeUserDTO getUserByName(String username) {
+		SourceforgeUserDTO resource = null;
 		
 		try {
 			String url = getProperties().getProperty("sourceforge.api.user.username");			
@@ -129,8 +129,8 @@ public class SourceforgeRestfulClient {
 		return resource;
 	}
 	
-	public SourceforgeUser getUserById(String userId) {
-		SourceforgeUser resource = null;
+	public SourceforgeUserDTO getUserById(String userId) {
+		SourceforgeUserDTO resource = null;
 		
 		try {
 			String url = getProperties().getProperty("sourceforge.api.user.id");			
@@ -162,8 +162,8 @@ public class SourceforgeRestfulClient {
 			@Override
 			protected List<Class> getTypesToEnhance() {					
 				return Arrays.<Class>asList(
-						SourceforgeUser.class,
-						SourceforgeUserProject.class
+						SourceforgeUserDTO.class,
+						SourceforgeUserProjectDTO.class
 					);
 			}
 			
@@ -189,13 +189,13 @@ public class SourceforgeRestfulClient {
 			@Override
 			protected List<Class> getTypesToEnhance() {					
 				return Arrays.<Class>asList(
-						SourceforgeCharity.class,
-						SourceforgeDeveloper.class,
-						SourceforgeDonation.class,
-						SourceforgeLicense.class,
-						SourceforgeProject.class,
-						SourceforgeSVNRepository.class,
-						SourceforgeTracker.class
+						SourceforgeCharityDTO.class,
+						SourceforgeDeveloperDTO.class,
+						SourceforgeDonationDTO.class,
+						SourceforgeLicenseDTO.class,
+						SourceforgeProjectDTO.class,
+						SourceforgeSVNRepositoryDTO.class,
+						SourceforgeTrackerDTO.class
 					);
 			}
 			

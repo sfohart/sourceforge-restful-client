@@ -2,7 +2,7 @@ package br.ufba.dcc.mestrado.computacao.sourceforge.restful.responses;
 
 import java.util.List;
 
-import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeProject;
+import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeProjectDTO;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -11,14 +11,14 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 public class SourceforgeProjectResponse {
 
 	@XStreamImplicit(itemFieldName = "Project")
-	private List<SourceforgeProject> sourceforgeProjects;
+	private List<SourceforgeProjectDTO> sourceforgeProjects;
 
-	public List<SourceforgeProject> getSourceforgeProjects() {
+	public List<SourceforgeProjectDTO> getSourceforgeProjects() {
 		return sourceforgeProjects;
 	}
 
 	public void setSourceforgeProjects(
-			List<SourceforgeProject> sourceforgeProjects) {
+			List<SourceforgeProjectDTO> sourceforgeProjects) {
 		this.sourceforgeProjects = sourceforgeProjects;
 	}
 

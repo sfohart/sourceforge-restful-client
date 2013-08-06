@@ -4,12 +4,15 @@ package br.ufba.dcc.mestrado.computacao.sourceforge.data.project;
 import java.util.List;
 
 import br.ufba.dcc.mestrado.computacao.sourceforge.data.SourceforgeDTO;
+import br.ufba.dcc.mestrado.computacao.xstream.converters.NullableDoubleConverter;
+import br.ufba.dcc.mestrado.computacao.xstream.converters.NullableLongConverter;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-@XStreamAlias(SourceforgeProject.NODE_NAME)
-public class SourceforgeProject implements SourceforgeDTO {
+@XStreamAlias(SourceforgeProjectDTO.NODE_NAME)
+public class SourceforgeProjectDTO implements SourceforgeDTO {
 	
 	/**
 	 * 
@@ -19,72 +22,77 @@ public class SourceforgeProject implements SourceforgeDTO {
 	public final static String NODE_NAME = "Project";
 	
 	@XStreamAlias("SVNRepository")
-   	private SourceforgeSVNRepository svnRepository;
+   	private SourceforgeSVNRepositoryDTO svnRepository;
    	
 	@XStreamImplicit(itemFieldName = "audiences")
-   	private List<String> audiences;
+   	private List<SourceforgeAudienceDTO> audiences;
 	
 	@XStreamAlias("base_url")
    	private String baseUrl;
 	
 	@XStreamImplicit(itemFieldName = "categories")
-   	private List<String> categories;
+   	private List<SourceforgeCategoryDTO> categories;
 	
 	@XStreamAlias("created")
    	private String created;
    	
    	@XStreamAlias("created_timestamp")
+   	@XStreamConverter(value = NullableLongConverter.class)
    	private Long createdTimestamp;
    	
    	@XStreamImplicit(itemFieldName = "databases")
-   	private List<String> databases;
+   	private List<SourceforgeDatabaseDTO> databases;
    	
    	@XStreamAlias("description")
    	private String description;
    	
    	@XStreamImplicit(itemFieldName = "developers")
-   	private List<SourceforgeDeveloper> developers;
+   	private List<SourceforgeDeveloperDTO> developers;
    	
    	@XStreamAlias("donation")
-   	private SourceforgeDonation donation;
+   	private SourceforgeDonationDTO donation;
    	
    	@XStreamAlias("download-page")
    	private String downloaPage;
    	
    	@XStreamImplicit(itemFieldName = "environments")
-   	private List<String> environments;
+   	private List<SourceforgeEnvironmentDTO> environments;
    	
    	@XStreamAlias("homepage")
    	private String homepage;
    	
    	@XStreamAlias("id")
+   	@XStreamConverter(value = NullableLongConverter.class)
    	private Long id;
    	
    	@XStreamImplicit(itemFieldName ="licenses")
-   	private List<SourceforgeLicense> licenses;
+   	private List<SourceforgeLicenseDTO> licenses;
    	
    	@XStreamAlias("mailing-list")
    	private String mailingList;
    	
    	@XStreamImplicit(itemFieldName = "maintainers")
-   	private List<SourceforgeDeveloper> maintainers;
+   	private List<SourceforgeDeveloperDTO> maintainers;
    	
    	@XStreamAlias("name")
    	private String name;
    	
    	@XStreamAlias("os")
-   	private List<String> os;
+   	private List<SourceforgeOSDTO> os;
    	
    	@XStreamAlias("percentile")
+   	@XStreamConverter(value = NullableDoubleConverter.class)
    	private Double percentile;
    	
    	@XStreamAlias("private")
-   	private Number privateNumber;
+   	@XStreamConverter(value = NullableLongConverter.class)
+   	private Long privateNumber;
    	
    	@XStreamImplicit(itemFieldName = "programming-languages")
-   	private List<String> programmingLanguages;
+   	private List<SourceforgeProgrammingLanguageDTO> programmingLanguages;
    	
    	@XStreamAlias("ranking")
+   	@XStreamConverter(value = NullableDoubleConverter.class)
    	private Double ranking;
    	
    	@XStreamAlias("shortdesc")
@@ -100,27 +108,28 @@ public class SourceforgeProject implements SourceforgeDTO {
    	private String supportPage;
    	
    	@XStreamImplicit(itemFieldName = "topics")
-   	private List<String> topics;
+   	private List<SourceforgeTopicDTO> topics;
    	
    	@XStreamImplicit(itemFieldName = "trackers")
-   	private List<SourceforgeTracker> trackers;
+   	private List<SourceforgeTrackerDTO> trackers;
    	
    	@XStreamAlias("type")
-   	private Number typeNumber;
+   	@XStreamConverter(value = NullableLongConverter.class)
+   	private Long typeNumber;
 
-	public SourceforgeSVNRepository getSvnRepository() {
+	public SourceforgeSVNRepositoryDTO getSvnRepository() {
 		return svnRepository;
 	}
 
-	public void setSvnRepository(SourceforgeSVNRepository svnRepository) {
+	public void setSvnRepository(SourceforgeSVNRepositoryDTO svnRepository) {
 		this.svnRepository = svnRepository;
 	}
 
-	public List<String> getAudiences() {
+	public List<SourceforgeAudienceDTO> getAudiences() {
 		return audiences;
 	}
 
-	public void setAudiences(List<String> audiences) {
+	public void setAudiences(List<SourceforgeAudienceDTO> audiences) {
 		this.audiences = audiences;
 	}
 
@@ -132,11 +141,11 @@ public class SourceforgeProject implements SourceforgeDTO {
 		this.baseUrl = baseUrl;
 	}
 
-	public List<String> getCategories() {
+	public List<SourceforgeCategoryDTO> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(List<String> categories) {
+	public void setCategories(List<SourceforgeCategoryDTO> categories) {
 		this.categories = categories;
 	}
 
@@ -156,11 +165,11 @@ public class SourceforgeProject implements SourceforgeDTO {
 		this.createdTimestamp = createdTimestamp;
 	}
 
-	public List<String> getDatabases() {
+	public List<SourceforgeDatabaseDTO> getDatabases() {
 		return databases;
 	}
 
-	public void setDatabases(List<String> databases) {
+	public void setDatabases(List<SourceforgeDatabaseDTO> databases) {
 		this.databases = databases;
 	}
 
@@ -172,19 +181,19 @@ public class SourceforgeProject implements SourceforgeDTO {
 		this.description = description;
 	}
 
-	public List<SourceforgeDeveloper> getDevelopers() {
+	public List<SourceforgeDeveloperDTO> getDevelopers() {
 		return developers;
 	}
 
-	public void setDevelopers(List<SourceforgeDeveloper> developers) {
+	public void setDevelopers(List<SourceforgeDeveloperDTO> developers) {
 		this.developers = developers;
 	}
 
-	public SourceforgeDonation getDonation() {
+	public SourceforgeDonationDTO getDonation() {
 		return donation;
 	}
 
-	public void setDonation(SourceforgeDonation donation) {
+	public void setDonation(SourceforgeDonationDTO donation) {
 		this.donation = donation;
 	}
 
@@ -196,11 +205,11 @@ public class SourceforgeProject implements SourceforgeDTO {
 		this.downloaPage = downloaPage;
 	}
 
-	public List<String> getEnvironments() {
+	public List<SourceforgeEnvironmentDTO> getEnvironments() {
 		return environments;
 	}
 
-	public void setEnvironments(List<String> environments) {
+	public void setEnvironments(List<SourceforgeEnvironmentDTO> environments) {
 		this.environments = environments;
 	}
 
@@ -220,11 +229,11 @@ public class SourceforgeProject implements SourceforgeDTO {
 		this.id = id;
 	}
 
-	public List<SourceforgeLicense> getLicenses() {
+	public List<SourceforgeLicenseDTO> getLicenses() {
 		return licenses;
 	}
 
-	public void setLicenses(List<SourceforgeLicense> licenses) {
+	public void setLicenses(List<SourceforgeLicenseDTO> licenses) {
 		this.licenses = licenses;
 	}
 
@@ -236,11 +245,11 @@ public class SourceforgeProject implements SourceforgeDTO {
 		this.mailingList = mailingList;
 	}
 
-	public List<SourceforgeDeveloper> getMaintainers() {
+	public List<SourceforgeDeveloperDTO> getMaintainers() {
 		return maintainers;
 	}
 
-	public void setMaintainers(List<SourceforgeDeveloper> maintainers) {
+	public void setMaintainers(List<SourceforgeDeveloperDTO> maintainers) {
 		this.maintainers = maintainers;
 	}
 
@@ -252,11 +261,11 @@ public class SourceforgeProject implements SourceforgeDTO {
 		this.name = name;
 	}
 
-	public List<String> getOs() {
+	public List<SourceforgeOSDTO> getOs() {
 		return os;
 	}
 
-	public void setOs(List<String> os) {
+	public void setOs(List<SourceforgeOSDTO> os) {
 		this.os = os;
 	}
 
@@ -268,19 +277,19 @@ public class SourceforgeProject implements SourceforgeDTO {
 		this.percentile = percentile;
 	}
 
-	public Number getPrivateNumber() {
+	public Long getPrivateNumber() {
 		return privateNumber;
 	}
 
-	public void setPrivateNumber(Number privateNumber) {
+	public void setPrivateNumber(Long privateNumber) {
 		this.privateNumber = privateNumber;
 	}
 
-	public List<String> getProgrammingLanguages() {
+	public List<SourceforgeProgrammingLanguageDTO> getProgrammingLanguages() {
 		return programmingLanguages;
 	}
 
-	public void setProgrammingLanguages(List<String> programmingLanguages) {
+	public void setProgrammingLanguages(List<SourceforgeProgrammingLanguageDTO> programmingLanguages) {
 		this.programmingLanguages = programmingLanguages;
 	}
 
@@ -324,27 +333,27 @@ public class SourceforgeProject implements SourceforgeDTO {
 		this.supportPage = supportPage;
 	}
 
-	public List<String> getTopics() {
+	public List<SourceforgeTopicDTO> getTopics() {
 		return topics;
 	}
 
-	public void setTopics(List<String> topics) {
+	public void setTopics(List<SourceforgeTopicDTO> topics) {
 		this.topics = topics;
 	}
 
-	public List<SourceforgeTracker> getTrackers() {
+	public List<SourceforgeTrackerDTO> getTrackers() {
 		return trackers;
 	}
 
-	public void setTrackers(List<SourceforgeTracker> trackers) {
+	public void setTrackers(List<SourceforgeTrackerDTO> trackers) {
 		this.trackers = trackers;
 	}
 
-	public Number getTypeNumber() {
+	public Long getTypeNumber() {
 		return typeNumber;
 	}
 
-	public void setTypeNumber(Number typeNumber) {
+	public void setTypeNumber(Long typeNumber) {
 		this.typeNumber = typeNumber;
 	}
    	
