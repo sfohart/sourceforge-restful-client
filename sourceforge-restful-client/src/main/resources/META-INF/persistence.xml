@@ -23,6 +23,7 @@
 		<class>br.ufba.dcc.mestrado.computacao.sourceforge.entity.project.SourceforgeTrackerEntity</class>
 		<class>br.ufba.dcc.mestrado.computacao.sourceforge.entity.user.SourceforgeUserEntity</class>
 		<class>br.ufba.dcc.mestrado.computacao.sourceforge.entity.user.SourceforgeUserProjectEntity</class>
+		<class>br.ufba.dcc.mestrado.computacao.sourceforge.entity.SourceforgeCrawlerProjectEntity</class>
 
 
 		<properties>

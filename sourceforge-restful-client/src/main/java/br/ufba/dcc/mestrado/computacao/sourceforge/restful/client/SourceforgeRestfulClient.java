@@ -4,17 +4,26 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
+import org.jdom.Content;
+import org.jdom.Element;
 
 import br.com.caelum.restfulie.Response;
 import br.com.caelum.restfulie.RestClient;
 import br.com.caelum.restfulie.Restfulie;
 import br.com.caelum.restfulie.mediatype.JsonMediaType;
+import br.ufba.dcc.mestrado.computacao.qualifier.SourceforgeCrawlerProjectRepositoryQualifier;
+import br.ufba.dcc.mestrado.computacao.qualifier.SourceforgeProjectServiceQualifier;
+import br.ufba.dcc.mestrado.computacao.repository.SourceforgeCrawlerProjectRepository;
+import br.ufba.dcc.mestrado.computacao.service.SourceforgeProjectService;
 import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeCharityDTO;
 import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeDeveloperDTO;
 import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeDonationDTO;
@@ -24,6 +33,7 @@ import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeSVNRe
 import br.ufba.dcc.mestrado.computacao.sourceforge.data.project.SourceforgeTrackerDTO;
 import br.ufba.dcc.mestrado.computacao.sourceforge.data.user.SourceforgeUserDTO;
 import br.ufba.dcc.mestrado.computacao.sourceforge.data.user.SourceforgeUserProjectDTO;
+import br.ufba.dcc.mestrado.computacao.sourceforge.entity.SourceforgeCrawlerProjectEntity;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -59,7 +69,13 @@ public class SourceforgeRestfulClient {
 		public static final Property fileFeed = model.createProperty(SOURCEFORGE_NS, "file-feed");
 	}
 	
+	@Inject
+	@SourceforgeProjectServiceQualifier
+	private SourceforgeProjectService projectService;
 	
+	@Inject
+	@SourceforgeCrawlerProjectRepositoryQualifier
+	private SourceforgeCrawlerProjectRepository crawlerRepository;
 
 	Logger logger = Logger.getLogger(SourceforgeRestfulClient.class.getName());
 	
@@ -85,20 +101,96 @@ public class SourceforgeRestfulClient {
 		return properties;
 	}
 	
-	public void getProjectSince(String since) throws IOException, IllegalArgumentException, FeedException {
-		String url = getProperties().getProperty("sourceforge.api.project.index.new_since");
-		String uri = MessageFormat.format(url, since);
+	@SuppressWarnings("unchecked")
+	public void downloadNewProjectSinceTimestamp() throws IllegalArgumentException, FeedException, IOException  {
 		
-		 SyndFeedInput input = new SyndFeedInput();
-		 URL feedSource = new URL(uri);
-		 SyndFeed feed = input.build(new XmlReader(feedSource));
-		 
-		 List<SyndEntry> entries = feed.getEntries();
-		 if (entries != null && ! entries.isEmpty()) {
-			 for (SyndEntry entry : entries) {
-				 SourceforgeProjectDTO projectDTO = createProject(entry.getLink());
-			 }
-		 }
+		SourceforgeCrawlerProjectEntity config = crawlerRepository.findCrawlerConfig();
+		if (config == null) {
+			config = new SourceforgeCrawlerProjectEntity();
+		}
+		
+		Long limit = config.getLimit();
+		Long offset = config.getOffset();
+		Long newSince = config.getNewSince();
+		
+		String baseURL = getProperties().getProperty("sourceforge.api.baseURL");
+		
+		try {
+			
+			if (newSince == null) {
+				newSince = System.currentTimeMillis();
+			}
+			
+			String url = getProperties().getProperty("sourceforge.api.project.index.new_since");
+			String uri = MessageFormat.format(url, newSince);
+			
+			if (limit != null && offset != null) {
+				if (limit > 0 && offset > 0) {
+					url = getProperties().getProperty("sourceforge.api.project.index.new_since.link");
+					uri = MessageFormat.format(url, newSince, limit, offset);
+				}
+			}
+			
+			
+			SyndFeedInput input = new SyndFeedInput();
+			List<SyndEntry> entries = null;
+			
+			do {
+				
+				URL feedSource = new URL(uri);
+				SyndFeed feed = input.build(new XmlReader(feedSource));
+				
+				entries = feed.getEntries();
+				
+				if (entries != null && ! entries.isEmpty()) {
+					for (SyndEntry entry : entries) {
+						try {
+							SourceforgeProjectDTO projectDTO = createProject(entry.getLink());
+							projectService.store(projectDTO);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				
+				//obtendo e salvando prÃ³xima pÃ¡gina a ser lida
+				List<Element> elementList = (List<Element>) feed.getForeignMarkup();
+				if (elementList != null && ! elementList.isEmpty()) {
+					for (Element element : elementList) {
+						if (element.getContent() != null && ! element.getContent().isEmpty()) {
+							Content content = element.getContent(0);
+							uri = baseURL + content.getValue();
+							
+							String pattern = "http://sourceforge.net/api/project/index/new_since/(\\d+)/limit/(\\d+)/offset/(\\d+)/rss";
+							
+							String limitParam 	= uri.replaceAll(pattern, "$2");
+							String offsetParam 	= uri.replaceAll(pattern, "$3");
+							
+							if (limitParam != null && ! "".equals(limitParam)) {
+								limit = Long.valueOf(limitParam);
+							}
+							
+							if (offsetParam != null && ! "".equals(offsetParam)) {
+								offset = Long.valueOf(offsetParam);
+							}
+							
+							config.setLimit(limit);
+							config.setOffset(offset);
+							break;
+						}
+					}
+				}
+				
+				crawlerRepository.save(config);
+			} while (entries != null && ! entries.isEmpty());
+			
+			if (entries == null || entries.isEmpty()) {
+				config.setNewSince(System.currentTimeMillis());
+			}
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 	protected SourceforgeProjectDTO createProject(String doap) {
@@ -106,9 +198,6 @@ public class SourceforgeRestfulClient {
 		model.setNsPrefix("doap", DOAP.getURI());
 		
 		model.read(doap, null);
-		System.out.println(doap);
-		System.out.println();
-		model.write(System.out);
 		
 		Resource projectRDF = model.getResource(doap + "#");
 		
@@ -389,7 +478,7 @@ public class SourceforgeRestfulClient {
 						Model model = ModelFactory.createDefaultModel();
 						
 						
-						System.out.println("Conteúdos:");
+						System.out.println("Conteï¿½dos:");
 						for (Object item : entry.getContents()) {
 							SyndContent content = (SyndContent) item;
 							
@@ -405,7 +494,7 @@ public class SourceforgeRestfulClient {
 								String nsDoap = "http://usefulinc.com/ns/doap#";
 								
 								System.out.println("\t\tNome: " + model.getResource(nsDoap + "name"));
-								System.out.println("\t\tDescrição Curta: " + model.getResource(nsDoap + "shortdesc"));
+								System.out.println("\t\tDescriï¿½ï¿½o Curta: " + model.getResource(nsDoap + "shortdesc"));
 								System.out.println("\t\tID: " + model.getResource(nsDoap + "id"));
 							}
 							
@@ -417,7 +506,6 @@ public class SourceforgeRestfulClient {
 					if (entry.getCategories() != null) {
 						System.out.println("Categorias:");
 						for (Object item : entry.getCategories()) {
-							
 							SyndCategory category = (SyndCategory) item;
 							System.out.println("\t" + category.getName());
 						}
