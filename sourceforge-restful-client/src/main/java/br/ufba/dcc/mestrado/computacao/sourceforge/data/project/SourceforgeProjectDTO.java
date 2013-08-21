@@ -53,7 +53,7 @@ public class SourceforgeProjectDTO implements SourceforgeDTO {
    	private SourceforgeDonationDTO donation;
    	
    	@XStreamAlias("download-page")
-   	private String downloaPage;
+   	private String downloadPage;
    	
    	@XStreamImplicit(itemFieldName = "environments")
    	private List<SourceforgeEnvironmentDTO> environments;
@@ -197,12 +197,12 @@ public class SourceforgeProjectDTO implements SourceforgeDTO {
 		this.donation = donation;
 	}
 
-	public String getDownloaPage() {
-		return downloaPage;
+	public String getDownloadPage() {
+		return downloadPage;
 	}
 
-	public void setDownloaPage(String downloaPage) {
-		this.downloaPage = downloaPage;
+	public void setDownloadPage(String downloadPage) {
+		this.downloadPage = downloadPage;
 	}
 
 	public List<SourceforgeEnvironmentDTO> getEnvironments() {

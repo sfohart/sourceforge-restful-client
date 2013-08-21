@@ -1,6 +1,5 @@
 package br.ufba.dcc.mestrado.computacao.sourceforge.restful.client;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +27,13 @@ import br.ufba.dcc.mestrado.computacao.sourceforge.data.user.SourceforgeUserProj
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.sparql.vocabulary.DOAP;
+import com.hp.hpl.jena.tdb.TDBFactory;
 import com.sun.syndication.feed.synd.SyndCategory;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -37,6 +43,23 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 public class SourceforgeRestfulClient {
+	
+	public static final class SOURCEFORGE {
+		private static final String SOURCEFORGE_NS = "http://sourceforge.net/api/sfelements.rdf#";
+
+		private static final Model model = ModelFactory.createDefaultModel();
+		
+		public static final Property id = model.createProperty(SOURCEFORGE_NS, "id");
+		public static final Property feature = model.createProperty(SOURCEFORGE_NS, "feature");
+		public static final Property baseUrl = model.createProperty(SOURCEFORGE_NS, "base-url");
+		public static final Property typeNumber = model.createProperty(SOURCEFORGE_NS, "type");
+		public static final Property privateNumber = model.createProperty(SOURCEFORGE_NS, "private");
+		public static final Property percentile = model.createProperty(SOURCEFORGE_NS, "percentile");
+		public static final Property ranking = model.createProperty(SOURCEFORGE_NS, "ranking");
+		public static final Property fileFeed = model.createProperty(SOURCEFORGE_NS, "file-feed");
+	}
+	
+	
 
 	Logger logger = Logger.getLogger(SourceforgeRestfulClient.class.getName());
 	
@@ -60,6 +83,126 @@ public class SourceforgeRestfulClient {
 		}
 		
 		return properties;
+	}
+	
+	public void getProjectSince(String since) throws IOException, IllegalArgumentException, FeedException {
+		String url = getProperties().getProperty("sourceforge.api.project.index.new_since");
+		String uri = MessageFormat.format(url, since);
+		
+		 SyndFeedInput input = new SyndFeedInput();
+		 URL feedSource = new URL(uri);
+		 SyndFeed feed = input.build(new XmlReader(feedSource));
+		 
+		 List<SyndEntry> entries = feed.getEntries();
+		 if (entries != null && ! entries.isEmpty()) {
+			 for (SyndEntry entry : entries) {
+				 SourceforgeProjectDTO projectDTO = createProject(entry.getLink());
+			 }
+		 }
+	}
+	
+	protected SourceforgeProjectDTO createProject(String doap) {
+		Model model = TDBFactory.createDataset().getDefaultModel();
+		model.setNsPrefix("doap", DOAP.getURI());
+		
+		model.read(doap, null);
+		System.out.println(doap);
+		System.out.println();
+		model.write(System.out);
+		
+		Resource projectRDF = model.getResource(doap + "#");
+		
+		SourceforgeProjectDTO projectDTO = new SourceforgeProjectDTO();
+		
+		//name property
+		if (projectRDF.getProperty(DOAP.name) != null) {
+			projectDTO.setName(projectRDF.getProperty(DOAP.name).getString());
+		}
+		
+		//created property
+		if (projectRDF.getProperty(DOAP.created) != null) {
+			projectDTO.setCreated(projectRDF.getProperty(DOAP.created).getString());
+		}
+		
+		//id property		
+		if (projectRDF.getProperty(SOURCEFORGE.id) != null) {
+			String id = projectRDF.getProperty(SOURCEFORGE.id).getString();
+			if (id != null && ! "".equals(id)) {
+				projectDTO.setId(Long.valueOf(id));
+			}
+		}
+		
+		//homepage property
+		if (projectRDF.getProperty(DOAP.homepage) != null) {
+			if (projectRDF.getProperty(DOAP.homepage).getObject() != null) {
+				projectDTO.setHomepage(projectRDF.getProperty(DOAP.homepage).getObject().toString());
+			}
+		}
+		
+		//download-page property
+		if (projectRDF.getProperty(DOAP.download_page) != null) {
+			if (projectRDF.getProperty(DOAP.download_page).getObject() != null) {
+				projectDTO.setDownloadPage(projectRDF.getProperty(DOAP.download_page).getObject().toString());
+			}
+		}
+		
+		//download-mirror property
+		if (projectRDF.getProperty(DOAP.shortdesc) != null) {
+			projectDTO.setShortDesc(projectRDF.getProperty(DOAP.shortdesc).getString());
+		}
+		
+		//base-url property
+		if (projectRDF.getProperty(SOURCEFORGE.baseUrl) != null) {
+			if (projectRDF.getProperty(SOURCEFORGE.baseUrl).getObject() != null) {
+				projectDTO.setBaseUrl(projectRDF.getProperty(SOURCEFORGE.baseUrl).getObject().toString());
+			}
+		}
+		
+		//type property
+		if (projectRDF.getProperty(SOURCEFORGE.typeNumber) != null) {
+			String typeNumber = projectRDF.getProperty(SOURCEFORGE.typeNumber).getString();
+			if (typeNumber != null && ! "".equals(typeNumber)) {
+				projectDTO.setTypeNumber(Long.valueOf(typeNumber));
+			}
+		}
+		
+		//private property
+		if (projectRDF.getProperty(SOURCEFORGE.privateNumber) != null) {
+			String privateNumber = projectRDF.getProperty(SOURCEFORGE.privateNumber).getString();
+			if (privateNumber != null && ! "".equals(privateNumber)) {
+				projectDTO.setPrivateNumber(Long.valueOf(privateNumber));
+			}
+		}
+		
+		
+		//percentile property
+		if (projectRDF.getProperty(SOURCEFORGE.percentile) != null) {
+			String percentile = projectRDF.getProperty(SOURCEFORGE.percentile).getString();
+			if (percentile != null && ! "".equals(percentile)) {
+				projectDTO.setPercentile(Double.valueOf(percentile));
+			}
+		}
+		
+		//ranking property
+		if (projectRDF.getProperty(SOURCEFORGE.ranking) != null) {
+			String ranking = projectRDF.getProperty(SOURCEFORGE.ranking).getString();
+			if (ranking != null && ! "".equals(ranking)) {
+				projectDTO.setRanking(Double.valueOf(ranking));
+			}
+		}
+		
+		//feature property
+		StmtIterator featureIterator = projectRDF.listProperties(SOURCEFORGE.feature);
+		while (featureIterator.hasNext()) {
+			Statement featureStmt = featureIterator.next();
+			Property featurePredicate = featureStmt.getPredicate();
+			RDFNode featureObject = featureStmt.getObject();
+			
+			String featureName = featureObject.asResource().getProperty(DOAP.name).getString();
+			System.out.println(featureName);
+		}
+		
+		return projectDTO;
 	}
 	
 	public SourceforgeProjectDTO getProjectById(String projectId) {

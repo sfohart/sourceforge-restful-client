@@ -50,7 +50,7 @@
 
 
 	<dependencies>
-		
+
 		<!-- Leitor de RSS -->
 		<dependency>
 			<groupId>rome</groupId>
@@ -64,6 +64,12 @@
 			<artifactId>apache-jena-libs</artifactId>
 			<type>pom</type>
 			<version>${apache-jena-libs.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpclient.version}</version>
 		</dependency>
 
 		<dependency>
@@ -170,6 +176,7 @@
 		<junit.version>4.11</junit.version>
 		<joda-time.version>2.1</joda-time.version>
 		<glassfish-embedded-all.version>4.0</glassfish-embedded-all.version>
+		<httpclient.version>4.2.5</httpclient.version>
 	</properties>
 
 </project>
